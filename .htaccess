@@ -1,0 +1,3 @@
+<IfModule mod_rewrite.c>
+AddType application/octet-stream .sql
+</IfModule>

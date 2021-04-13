@@ -1,0 +1,2 @@
+- merubah mysql ke mysqli
+-sintaks mysqli_query($con, $query); harus ada $con nya

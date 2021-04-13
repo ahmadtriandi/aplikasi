@@ -1,0 +1,208 @@
+body
+{
+margin-top : 0px;
+}
+#tengah
+{
+text-align:center
+}
+#header
+{
+height:110px;
+color : white;
+text-align : center;
+font-size :30px;
+font-family :arial;
+
+}
+#oval {
+border : 1px solid black;
+    -moz-border-radius : 25px;
+    -webkit-border-radius : 25px;
+	width:250px;
+}
+#template
+{
+/*border-collapse:collapse;*/
+width:1100px;
+}
+#template  td
+{
+border: 0px solid white;
+}
+#tabel
+{
+font-size:15px;
+border-collapse:collapse;
+}
+#tabel  td
+{
+padding-left:5px;
+border: 1px solid black;
+}
+#login {
+border : 0px solid black;
+font-size:13px;
+}
+#tabelinput
+{
+font-size:15px;
+border-collapse:collapse;
+}
+/* -------------MENU (BEGIN)--------------*/
+#menuposisi {
+	width:1100px;
+}
+#menu {
+	position: relative;
+	width: 100%;
+	height: 74px;
+	background: #0081D7;
+	border:0px solid white;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:12px;
+	margin-left:0px;
+}
+
+#menu ul {
+	padding: 0px;
+	margin: 0px;
+	list-style: none;
+} 
+
+#menu ul li {
+	float: left; 
+	position: relative;
+}
+
+#menu ul li a {
+	float: left;
+	color: #FFFFFF;
+	padding: 5px;
+	padding-left:10px;
+	padding-right:10px;
+	border-right: 1px solid white;
+	
+	border-left: 0px solid white;
+	
+	text-decoration: none;
+	display: block;
+}
+
+#menu ul li a:hover {
+	background: #FFCC00;
+	color:#000000;
+}
+
+#menu ul li ul {
+	display: none;
+}
+
+#menu ul li:hover ul { 
+	display: block; 
+	position: absolute; 
+	top:75px; 
+	left:0;
+}
+
+#menu ul li:hover ul li a {
+	display: block; 
+	background: #0071BB; 
+	color: #ffffff; 
+	width: 150px; 
+	height:25px;
+	border-left: 0px solid #000000;
+	border-bottom: 1px solid white;
+}
+
+#menu ul li:hover ul li a:hover {
+	background: #FFCC00; 
+	color: #000000;
+}
+/* -------------MENU (END)--------------*/
+#background {
+border : 0px solid white;
+    -moz-border-radius : 25px;
+    -webkit-border-radius : 25px;
+
+}
+/*---------------KONTEN (BEGIN) --------------*/
+#konten
+{
+font-family:arial;
+text-align:center;
+vertical-align:top;
+padding-top:20px;
+padding-bottom:30px;
+background:#AADDFF;
+width:1100px;
+
+}
+/*------------KONTEN (END) -------------------*/
+/*-----------FOOTER (BEGIN)------------*/
+#footer
+{
+font-family:arial;
+font-size:11px;
+text-align:center;
+background-color:#0081D7;
+color:#FFFFFF;
+width:1100px;
+line-height:35px;
+}
+/*-----------FOOTER (END)------------*/
+
+/*PAGINATION*/
+#pagination a
+{
+text-decoration:none;
+color:#B2b2b2;
+
+}
+
+#pagination a:hover
+{
+
+color:#DF3D82;
+text-decoration:underline;
+
+}
+#loading { 
+width: 300px; 
+position:absolute;
+}
+
+#pagination
+{
+text-align:center;
+}
+#pagination li{	
+list-style: none; 
+float: left; 
+margin-right: 16px; 
+padding:5px; 
+border:solid 1px #000000;
+color:#0063DC; 
+}
+#pagination li:hover
+{ 
+color:#FF0084; 
+cursor: pointer; 
+}
+#page a
+{
+color:blue;
+}
+#page a:visited
+{
+color:blue;
+}
+.highlight
+{
+background: #CEDAEB;
+}
+
+.highlight_important
+{
+background: #9afa95;
+}
