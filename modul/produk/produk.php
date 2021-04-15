@@ -13,10 +13,10 @@ $page = isset($_GET['page']) ? $_GET['page'] : 1;
 $limit = 10;
 $mulai_dari = $limit * ($page - 1);
 $sql_limit = "select * from produk order by id_barang limit $mulai_dari, $limit";
-$query=mysqli_query($con, $sql_limit);;
-echo"<h2>Data Produk</h2>";
-echo"<input type=button style='background-color:#006699; color:#fff; line-height:30px;cursor:pointer;border:hidden;' value='Tambah Data Produk' onclick=location.href='?modul=produk&aksi=tambahproduk'></br></br>";
-echo"<center><table id='tabel' style='width:1050px; font-size:11px;'>
+$query=mysqli_query($con, $sql_limit); ?>
+<h2>Data Produk</h2>
+<input type=button style='background-color:#006699; color:#fff; line-height:30px;cursor:pointer;border:hidden;' value='Tambah Data Produk' onclick=location.href='?modul=produk&aksi=tambahproduk'></br></br>
+<center><table id='tabel' style='width:1050px; font-size:11px;'>
 <tr bgcolor='#333333' style=\"color:#FFFFFF\" align='center' height='25px'>
 <td width='10%'>Kode Produk</td>
 <td width='13%'>Brand</td>
@@ -27,7 +27,8 @@ echo"<center><table id='tabel' style='width:1050px; font-size:11px;'>
 <td width='10%'>Harga Beli</td>
 <td width='10%'>Harga Jual</td>
 <td width='10%' colspan='2'>Aksi</td>
-<td width='10%'>Kode Barcode</td>";
+<td width='10%'>Kode Barcode</td>
+<?php
 $no=1;
 $baris=1;
 while($tampil=mysqli_fetch_array($query)){ 
@@ -38,18 +39,19 @@ echo "<tr bgcolor=\"#e4e3e8\">";
 else 
 {
 echo "<tr bgcolor=\"#FFFFFF\">"; 
-}
-echo"<td>$tampil[id_barang]</td>";
-echo"<td>$tampil[brand]</td>";
-echo"<td>$tampil[nama_barang]</td>";
-echo"<td>$tampil[satuan]</td>";
-echo"<td>$tampil[kategori]</td>";
-echo"<td>$tampil[stock]</td>";
-echo"<td>$tampil[harga_beli]</td>";
-echo"<td>$tampil[harga_jual]</td>";
-echo"<td><a href=?modul=produk&aksi=editproduk&no=$tampil[id_barang]><img src='images/edit128px.png' width='24px' title='Edit'</td>";
-echo"<td><a onclick=\"return confirm('Anda Yakin Menghapus Data Ini?')\" href='?modul=produk&aksi=hapus&id=$tampil[id_barang]'><img src='images/delete128px.png' width='24px' title='Hapus'></td>";
-echo"<td><img src='modul/produk/barcode.php?encode=CODE128&bdata=$tampil[id_barang]&height=50&scale=1.5&bgcolor=%23FFFFFF&color=%23000000&file=&type=png'/></td>";
+} ?>
+<td><?=$tampil["id_barang"]?></td>
+<td><?=$tampil["brand"]?></td>
+<td><?=$tampil["nama_barang"]?></td>
+<td><?=$tampil["satuan"]?></td>
+<td><?=$tampil["kategori"]?></td>
+<td><?=$tampil["stock"]?></td>
+<td><?=$tampil["harga_beli"]?></td>
+<td><?=$tampil["harga_jual"]?></td>
+<td><a href=?modul=produk&aksi=editproduk&no=<?=$tampil['id_barang']?>><img src='images/edit128px.png' width='24px' title='Edit'></td>
+<td><a onclick=\"return confirm('Anda Yakin Menghapus Data Ini?')\" href='?modul=produk&aksi=hapus&id=<?=$tampil["id_barang"]?>'><img src='images/delete128px.png' width='24px' title='Hapus'></td>
+<td><img src='modul/produk/barcode.php?encode=CODE128&bdata=<?=$tampil["id_barang"]?>&height=50&scale=1.5&bgcolor=%23FFFFFF&color=%23000000&file=&type=png'/></td>
+<?php
 $no++;
 $baris++;}
 echo"</tr>";
@@ -66,56 +68,60 @@ for($i = 1; $i <= $banyakHalaman; $i++){
 break;
 
 //INTERFACE TAMBAH
-case "tambahproduk": 
-	echo"<h2>Tambah Data produk</h2>";
-	echo"<center><table id='tabeledit'><form action='?modul=produk&aksi=input' name='postform' method=POST>
-			<tr><td><label for='id_barang1'> Kode Barang : </label></td><td>
-		<input type='text' id='id_barang1' name='id_barang' size='40' maxlength='30'></td></tr>
-		<tr><td><label for='brand'>Brand : </label></td><td>
-		<input type=text id='brand' name='brand'  size='40' maxlength='80'></td></tr>
-		<tr><td><label for='nama_barang'>Nama Barang : </label</td><td>
-		<input size='40' type='text' id='nama_barang' name='nama_barang' />
-		</td></tr>
-		<tr><td><label for='satuan'>Satuan : </label></td><td>
-		<input size='40' type='text' id='satuan' name='satuan' />
-		</td></tr>
-		<tr><td><label for='kategori'>Kategori : </label></td><td>
-		<select 	name='kategori' id='kategori'>
-		<option value='HP'>HP</option>
-		<option value='Aksesoris'>Aksesoris</option>
-		</select>
-		</td></tr>
-		<tr><td><label for='stock'>Stock : </label></td><td>
-		<input size='40' value='0' type=text id='stock' name='stock' maxlength='4'></td></tr>
-		<tr><td><label for='harga_beli'>Harga Beli : </label></td><td>
-		<input size='40' type=text id='harga_beli' name='harga_beli' onkeyup=\"this.value = numberFormat(this.value);\" maxlength='20'></td></tr>
-		<tr><td><label for='harga_jual'>Harga Jual : </label></td><td>
-		<input size='40' type=text id='harga_jual'name='harga_jual' onkeyup=\"this.value = numberFormat(this.value);\" maxlength='20'></td></tr>
-			<tr><td colspan=2 align=center><input type=submit value='Save'>
-					<input type=button onclick=self.history.back()  value='Batal'>
-			</td></tr></form></table></center>";
-		break;
+case "tambahproduk": ?>
+	<h2>Tambah Data produk</h2>
+	<center>
+	<table id='tabeledit'><form action='?modul=produk&aksi=input' name='postform' method=POST>
+	<tr><td><label for='id_barang1'> Kode Barang : </label></td><td>
+	<input type='text' id='id_barang1' name='id_barang' size='40' maxlength='30'></td></tr>
+	<tr><td><label for='brand'>Brand : </label></td><td>
+	<input type=text id='brand' name='brand'  size='40' maxlength='80'></td></tr>
+	<tr><td><label for='nama_barang'>Nama Barang : </label</td><td>
+	<input size='40' type='text' id='nama_barang' name='nama_barang' />
+	</td></tr>
+	<tr><td><label for='satuan'>Satuan : </label></td><td>
+	<input size='40' type='text' id='satuan' name='satuan' />
+	</td></tr>
+	<tr><td><label for='kategori'>Kategori : </label></td><td>
+	<select 	name='kategori' id='kategori'>
+	<option value='HP'>HP</option>
+	<option value='Aksesoris'>Aksesoris</option>
+	</select>
+	</td></tr>
+	<tr><td><label for='stock'>Stock : </label></td><td>
+	<input size='40' value='0' type=text id='stock' name='stock' maxlength='4'></td></tr>
+	<tr><td><label for='harga_beli'>Harga Beli : </label></td><td>
+	<input size='40' type=text id='harga_beli' name='harga_beli' onkeyup=\"this.value = numberFormat(this.value);\" maxlength='20'></td></tr>
+	<tr><td><label for='harga_jual'>Harga Jual : </label></td><td>
+	<input size='40' type=text id='harga_jual'name='harga_jual' onkeyup=\"this.value = numberFormat(this.value);\" maxlength='20'></td></tr>
+		<tr><td colspan=2 align=center><input type=submit value='Save'>
+				<input type=button onclick=self.history.back()  value='Batal'>
+		</td></tr></form></table></center>
+	<?php break; ?>
 
-
+<?php
 //INTERFACE EDITUSER
 case "editproduk":
-echo"<h2>Edit Data produk</h2>";
+
 $db="select * from produk where id_barang='$_GET[no]'";
 $qri=mysqli_query($con, $db);
-$row=mysqli_fetch_array($qri);
-echo"<form action='?modul=produk&aksi=update&no_produk=$row[id_barang]' name='postform2' method=POST>";
-echo"<center><table id='tabeledit'>";
-echo"<tr><td><label for='id_barang'>No Produk : </label></td><td><input style='background-color:#eeeeff'; readonly='1' type=text id='id_barang'name='id_barang' value='$row[id_barang]'></td></tr>";
-echo"<tr><td><label for='brand'>Brand : </label></td><td><input type=text id='brand'name='brand' value='$row[brand]'></td></tr>";
-echo"<tr><td><label for='nama_barang'>Nama Barang : </label?</td><td><input type=text id='nama_barang' name='nama_barang' value='$row[nama_barang]'></td></tr>";
-echo"<tr><td><label for='satuan'>Satuan : </label></td><td><input type=text id='satuan' name='satuan' value='$row[satuan]'></td></tr>";
-echo"<tr><td><label for='stock'>Stock : </label></td><td><input type=text id='stock' name='stock' value='$row[stock]'></td></tr>";
-echo"<tr><td><label for='kategori'>Kategori : </label></td><td><input type=text id='kategori' name='kategori' value='$row[kategori]'></td></tr>";
-echo"<tr><td><label for='harga_beli'>Harga Beli : </label></td><td><input type=text id='harga_beli'name='harga_beli' value='$row[harga_beli]'></td></tr>";
-echo"<tr><td><label for='harga-jual'>Harga Jual : </label></td><td><input type=text id='harga_jual'name='harga_jual' value='$row[harga_jual]'></td></tr>";
-echo"<tr><td colspan=2 align=center><input type=submit name='save'  value='UpDate'>
-	<input type=button onclick=self.history.back()  value='Batal'></td></tr>";
-echo"</table></center>";
+$row=mysqli_fetch_array($qri); ?>
+<h2>Edit Data produk</h2>
+<form action='?modul=produk&aksi=update&no_produk=<?=$row["id_barang"]?>' name='postform2' method=POST>
+<center><table id='tabeledit'>
+<tr><td><label for='id_barang'>No Produk : </label></td><td><input style='background-color:#eeeeff'; readonly='1' type=text id='id_barang'name='id_barang' value='<?=$row["id_barang"]?>'></td></tr>
+<tr><td><label for='brand'>Brand : </label></td><td><input type=text id='brand'name='brand' value='<?=$row["brand"]?>'></td></tr>
+<tr><td><label for='nama_barang'>Nama Barang : </label?</td><td><input type=text id='nama_barang' name='nama_barang' value='<?=$row["nama_barang"]?>'></td></tr>
+<tr><td><label for='satuan'>Satuan : </label></td><td><input type=text id='satuan' name='satuan' value='<?=$row["satuan"]?>'></td></tr>
+<tr><td><label for='stock'>Stock : </label></td><td><input type=text id='stock' name='stock' value='<?=$row["stock"]?>'></td></tr>
+<tr><td><label for='kategori'>Kategori : </label></td><td><input type=text id='kategori' name='kategori' value='<?=$row["kategori"]?>'></td></tr>
+<tr><td><label for='harga_beli'>Harga Beli : </label></td><td><input type=text id='harga_beli'name='harga_beli' value='<?=$row["harga_beli"]?>'></td></tr>
+<tr><td><label for='harga-jual'>Harga Jual : </label></td><td><input type=text id='harga_jual'name='harga_jual' value='<?=$row["harga_jual"]?>'></td></tr>
+<tr><td colspan=2 align=center><input type=submit name='save'  value='UpDate'>
+	<input type=button onclick=self.history.back()  value='Batal'></td></tr>
+</table></center>
+
+<?php
 break; 
 
 //HAPUS
@@ -140,24 +146,24 @@ elseif ($tampilcek['id_barang'] == $_POST['id_barang']){
 echo '<script>alert(\'Data Sudah Ada . . / Sudah Terisi ! !\')
 	setTimeout(\'location.href="?modul=produk&aksi=tampil"\' ,0);</script>';
 }
-Else
-{		
+else{		
   $sql = mysqli_query($con, "INSERT INTO produk VALUES('$_POST[id_barang]','$_POST[brand]','$_POST[nama_barang]','$_POST[satuan]','$_POST[kategori]',$_POST[stock],$harga_beli,$harga_jual)"); 	  
   if ($sql){
 echo 'Data Berhasil Dimasukkan Dengan Data Sebagai Berikut :</br></br>';
 $query=mysqli_query($con, "select * from produk where id_barang = '$_POST[id_barang]'");
-while($tampil=mysqli_fetch_array($query)){ 
-echo"<center><table border='0' style='width:300px; font-size:11px;' align='center'>
-<tr><td width='50%'>No produk</td><td> : $tampil[id_barang]</td></tr>
-<tr><td>Brand</td><td> : $tampil[brand]</td></tr>
-<tr><td>nama_barang</td><td> : $tampil[nama_barang]</td></tr>
-<tr><td>Satuan</td><td> : $tampil[satuan]</td></tr>
-<tr><td>Kategori</td><td> : $tampil[kategori]</td></tr>
-<tr><td>Stock</td><td> : $tampil[stock]</td></tr>
-<tr><td>Harga Beli</td><td> : $tampil[harga_beli]</td></tr>
-<tr><td>Harga Jual</td><td> : $tampil[harga_jual]</td></tr>
-</table></br></br><a href='index.php?modul=produk&aksi=tampil'><b>Kembali</b></a></center>";
-}
+while($tampil=mysqli_fetch_array($query)) : ?>
+<center><table border='0' style='width:300px; font-size:11px;' align='center'>
+<tr><td width='50%'>No produk</td><td> : <?=$tampil['id_barang']?></td></tr>
+<tr><td>Brand</td><td> : <?=$tampil['brand']?></td></tr>
+<tr><td>nama_barang</td><td> : <?=$tampil['nama_barang']?></td></tr>
+<tr><td>Satuan</td><td> : <?=$tampil['satuan']?></td></tr>
+<tr><td>Kategori</td><td> : <?=$tampil['kategori']?></td></tr>
+<tr><td>Stock</td><td> : <?=$tampil['stock']?></td></tr>
+<tr><td>Harga Beli</td><td> : <?=$tampil['harga_beli']?></td></tr>
+<tr><td>Harga Jual</td><td> : <?=$tampil['harga_jual']?></td></tr>
+</table></br></br><a href='index.php?modul=produk&aksi=tampil'><b>Kembali</b></a></center>
+<?php endwhile; ?>
+<?php
 }else{
 echo 'Data Gagal Dimasukkan. Mohon Periksa Kembali Data Yang Dimasukkan.</br>
 Kemungkinan Data Yang dimasukkan tidak benar atau kode barang yang dimasukkan sudah ada Sebelumnya.</br>';
