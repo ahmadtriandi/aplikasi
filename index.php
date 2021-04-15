@@ -222,9 +222,9 @@ if($selisih < 0){
         break;
       }
     }
-    else{
-      if(!isset($_SESSION["user"])) {
-        echo '<center><div id="background" style="background-color:#0081D7; width:350px; padding-top:15px; padding-bottom:15px;" >
+    else{ ?>
+      <?php if(!isset($_SESSION["user"])) : ?>
+        <center><div id="background" style="background-color:#0081D7; width:350px; padding-top:15px; padding-bottom:15px;" >
               <h4><div style="font-family:arial">FORM LOGIN</div></h4>
               <img src="images/login.png" alt="" width="120"/>	
     		      <form action="login/aksilogin.php" method="post">
@@ -234,17 +234,18 @@ if($selisih < 0){
     			       <tr><td colspan="2"><br><center><input type="reset" value="RESET" style="background-color:#FF3300; color:#fff; line-height:30px;cursor:pointer;border:hidden;"> <input type="submit" value="LOGIN" style="background-color:#789F00; color:#fff; line-height:30px;cursor:pointer;border:hidden;" ></center></td></tr>
     			      </table>
     		      </form></div>
-              </center>';
-      }
-      else {
-        echo '</br></br>Selamat Datang di Aplikasi <b>POS-WEB </b>(Aplikasi Penjualan & Pembelian Barang berbasis Web)</br>';
-        echo 'Untuk memulai proses atau transaksi, Silahkan klik icon atau tombol menu yang tersedia di bagian atas.</br></br></br>';
-        echo 'Anda Login sebagai User: <b>'.$_SESSION['user'].'</b> | Level: <b>'.$_SESSION["level"].'</b> <br> <br> <a href="login/aksilogout.php">Logout</a></br>';
-      }
+              </center>
+      
+      <?php else : ?>
+        </br></br>Selamat Datang di Aplikasi <b>POS-WEB </b>(Aplikasi Penjualan & Pembelian Barang berbasis Web)</br>
+       Untuk memulai proses atau transaksi, Silahkan klik icon atau tombol menu yang tersedia di bagian atas.</br></br></br>
+        Anda Login sebagai User: <b><?=$_SESSION['user']?></b> | Level: <b><?= $_SESSION["level"] ?></b> <br> <br> <a href="login/aksilogout.php">Logout</a></br>
+      <?php endif; ?>
+      <?php
     }
-  }
-echo '</div></td></tr></table>
-<div id="footer">Copyright '.date('Y').' Best Celular</div>
+  } ?>
+  </div></td></tr></table>
+<div id="footer">Copyright <?=date('Y')?> Best Celular</div>
 
 </center>
 </body>
