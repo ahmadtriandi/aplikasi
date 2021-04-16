@@ -17,7 +17,7 @@ $query=mysqli_query($con, $sql_limit); ?>
 <h2>Data Produk</h2>
 <input type=button style='background-color:#006699; color:#fff; line-height:30px;cursor:pointer;border:hidden;' value='Tambah Data Produk' onclick=location.href='?modul=produk&aksi=tambahproduk'></br></br>
 <center><table id='tabel' style='width:1050px; font-size:11px;'>
-<tr bgcolor='#333333' style=\"color:#FFFFFF\" align='center' height='25px'>
+<tr bgcolor='#333333' style="color:#FFFFFF" align='center' height='25px'>
 <td width='10%'>Kode Produk</td>
 <td width='13%'>Brand</td>
 <td width='20%'>Nama Barang</td>
@@ -46,10 +46,10 @@ echo "<tr bgcolor=\"#FFFFFF\">";
 <td><?=$tampil["satuan"]?></td>
 <td><?=$tampil["kategori"]?></td>
 <td><?=$tampil["stock"]?></td>
-<td><?=$tampil["harga_beli"]?></td>
-<td><?=$tampil["harga_jual"]?></td>
+<td>Rp.<?=number_format($tampil['harga_beli'],2,',','.')?></td>
+<td>Rp.<?=number_format($tampil['harga_jual'],2,',','.')?></td>
 <td><a href=?modul=produk&aksi=editproduk&no=<?=$tampil['id_barang']?>><img src='images/edit128px.png' width='24px' title='Edit'></td>
-<td><a onclick=\"return confirm('Anda Yakin Menghapus Data Ini?')\" href='?modul=produk&aksi=hapus&id=<?=$tampil["id_barang"]?>'><img src='images/delete128px.png' width='24px' title='Hapus'></td>
+<td><a onclick="return confirm('Anda Yakin Menghapus Data Ini?')" href='?modul=produk&aksi=hapus&id=<?=$tampil["id_barang"]?>'><img src='images/delete128px.png' width='24px' title='Hapus'></td>
 <td><img src='modul/produk/barcode.php?encode=CODE128&bdata=<?=$tampil["id_barang"]?>&height=50&scale=1.5&bgcolor=%23FFFFFF&color=%23000000&file=&type=png'/></td>
 <?php
 $no++;
@@ -91,9 +91,9 @@ case "tambahproduk": ?>
 	<tr><td><label for='stock'>Stock : </label></td><td>
 	<input size='40' value='0' type=text id='stock' name='stock' maxlength='4'></td></tr>
 	<tr><td><label for='harga_beli'>Harga Beli : </label></td><td>
-	<input size='40' type=text id='harga_beli' name='harga_beli' onkeyup=\"this.value = numberFormat(this.value);\" maxlength='20'></td></tr>
+	<input size='40' type=text id='harga_beli' name='harga_beli' onkeyup="this.value = numberFormat(this.value);" maxlength='20'></td></tr>
 	<tr><td><label for='harga_jual'>Harga Jual : </label></td><td>
-	<input size='40' type=text id='harga_jual'name='harga_jual' onkeyup=\"this.value = numberFormat(this.value);\" maxlength='20'></td></tr>
+	<input size='40' type=text id='harga_jual'name='harga_jual' onkeyup="this.value = numberFormat(this.value);" maxlength='20'></td></tr>
 		<tr><td colspan=2 align=center><input type=submit value='Save'>
 				<input type=button onclick=self.history.back()  value='Batal'>
 		</td></tr></form></table></center>
@@ -159,8 +159,8 @@ while($tampil=mysqli_fetch_array($query)) : ?>
 <tr><td>Satuan</td><td> : <?=$tampil['satuan']?></td></tr>
 <tr><td>Kategori</td><td> : <?=$tampil['kategori']?></td></tr>
 <tr><td>Stock</td><td> : <?=$tampil['stock']?></td></tr>
-<tr><td>Harga Beli</td><td> : <?=$tampil['harga_beli']?></td></tr>
-<tr><td>Harga Jual</td><td> : <?=$tampil['harga_jual']?></td></tr>
+<tr><td>Harga Beli</td><td> : Rp.<?=number_format($tampil['harga_beli'],2,',','.')?></td></tr>
+<tr><td>Harga Jual</td><td> : Rp.<?=number_format($tampil['harga_beli'],2,',','.')?></td></tr>
 </table></br></br><a href='index.php?modul=produk&aksi=tampil'><b>Kembali</b></a></center>
 <?php endwhile; ?>
 <?php
@@ -173,18 +173,54 @@ break;
 
 //UPDATE USER
 case "update":
-mysqli_query($con, "UPDATE produk SET id_barang='$_POST[id_barang]',
-                                brand ='$_POST[brand]',
-                                nama_barang='$_POST[nama_barang]',
-                               satuan='$_POST[satuan]',
-			kategori ='$_POST[kategori]',
-			stock =$_POST[stock],
-			harga_beli =$_POST[harga_beli],
-			harga_jual =$_POST[harga_jual]
-where id_barang='$_GET[no_produk]'");
-echo '<script>alert(\'Data Berhasil Diedit\')
-	setTimeout(\'location.href="?modul=produk&aksi=tampil"\' ,0);</script>';
-break;
+	$harga_beli = str_replace(",", '', $_POST['harga_beli']);
+	$harga_jual = str_replace(",", '', $_POST['harga_jual']);
+
+	if (empty($_POST['id_barang']) or empty($_POST['brand']) or empty($_POST['nama_barang']) or empty($_POST['satuan']) or empty($_POST['kategori']) or empty($_POST['harga_beli']) or empty($_POST['harga_jual'])) {
+		echo"<p>Salah satu Textbox tidak terisi<input type='button' onclick=self.history.back() value='back'/>";
+	}
+
+	else {
+		# code...
+		$sqledit=mysqli_query($con, "UPDATE produk SET 
+		id_barang='$_POST[id_barang]',
+		brand ='$_POST[brand]',
+		nama_barang='$_POST[nama_barang]',
+		satuan='$_POST[satuan]',
+		kategori ='$_POST[kategori]',
+		stock =$_POST[stock],
+		harga_beli =$harga_beli,
+		harga_jual =$harga_jual
+		where id_barang='$_GET[no_produk]'");
+		// echo '<script>alert(\'Data Berhasil Diedit\')
+		// 	setTimeout(\'location.href="?modul=produk&aksi=tampil"\' ,0);</script>';
+		if ($sqledit){
+			echo 'Data Berhasil Dimasukkan Dengan Data Sebagai Berikut :</br></br>';
+			$queryedit=mysqli_query($con, "select * from produk where id_barang = '$_POST[id_barang]'");
+			while($tampil=mysqli_fetch_array($queryedit)) : ?>
+			<center><table border='0' style='width:300px; font-size:11px;' align='center'>
+			<tr><td width='50%'>No produk</td><td> : <?=$tampil['id_barang']?></td></tr>
+			<tr><td>Brand</td><td> : <?=$tampil['brand']?></td></tr>
+			<tr><td>nama_barang</td><td> : <?=$tampil['nama_barang']?></td></tr>
+			<tr><td>Satuan</td><td> : <?=$tampil['satuan']?></td></tr>
+			<tr><td>Kategori</td><td> : <?=$tampil['kategori']?></td></tr>
+			<tr><td>Stock</td><td> : <?=$tampil['stock']?></td></tr>
+			<tr><td>Harga Beli</td><td> : Rp.<?=number_format($tampil['harga_beli'],2,',','.')?></td></tr>
+			<tr><td>Harga Jual</td><td> : Rp.<?=number_format($tampil['harga_jual'],2,',','.')?></td></tr>
+			</table></br></br><a href='index.php?modul=produk&aksi=tampil'><b>Kembali</b></a></center>
+			<?php endwhile; ?>
+			<?php
+			}else{
+			echo 'Data Gagal Dimasukkan. Mohon Periksa Kembali Data Yang Dimasukkan.</br>
+			Kemungkinan Data Yang dimasukkan tidak benar atau kode barang yang dimasukkan sudah ada Sebelumnya.</br>';
+			}
+											}
+		
+	
+	
+
+
+	break;
 }
 
 }
