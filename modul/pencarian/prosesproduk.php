@@ -6,7 +6,7 @@ include "../../koneksi/koneksi.php";
 
 //pencarian nama
 echo "<font face=verdana size=2px>Nama yang Anda cari adalah : </font>".$key=$_GET['id_produk'];
-$result=mysqli_query($con, "select * from produk where id_barang like '%$key%' or brand like '%$key%' or nama_barang like '%$key%' or kategori like '%$key%' order by id_barang"); 
+$result=mysqli_query($con, "select * from produk where id_barang like '%$key%' or brand like '%$key%' or nama_barang like '%$key%' or kategori like '%$key%' or satuan like '%$key%' order by id_barang"); 
 $get_pages=mysqli_num_rows($result);
 if ($get_pages){
 	?>

@@ -7,49 +7,24 @@ switch ($_GET['aksi'])
 //INTERFACE TABLE BROWSER
 case "tampil";
 
-// echo '<form action="" method="post">
-// <Label>Filter :</Label>
+echo '<form action="" method="post">
+<Label>Filter :</Label>
 
-// <input type="radio" name="filter" values="stock"> tersedia
-// <input type="radio" name="filter" values="terbaru"> terbaru
-// <input type="submit" name="submit">	
-// </form>';
+<input type="radio" name="filter" values="stock"> tersedia
+<input type="radio" name="filter" values="terbaru"> terbaru
+<input type="submit" name="submit">	
+</form>';
+
 $sqlCount = "select count(id_barang) from produk";
 $rsCount = mysqli_fetch_array(mysqli_query($con, $sqlCount));
 $banyakData = $rsCount[0];
 $page = isset($_GET['page']) ? $_GET['page'] : 1;
 $limit = 10;
 $mulai_dari = $limit * ($page - 1);
-?>
-<form action="" method="post" align="left">
-    <p>Filter:</p>
-    <input id="ketersediaanada" type="radio" name="ketersediaan" onclick="javascript:submit()" value="ada"<?php if (isset($_POST['ketersediaan']) && $_POST['ketersediaan'] == 'ada') echo ' checked="checked"';?> /><label for="ada">Ada</label>
-    <br>
-    <input id="ketersediaankosong" type="radio" name="ketersediaan" onclick="javascript:submit()" value="kosong" <?php if (isset($_POST['ketersediaan']) && $_POST['ketersediaan'] == 'kosong') echo ' checked="checked"';?> /><label for="kosong">Kosong</label>
-	</br>
-	<input id="ketersediaansemua" type="radio" name="ketersediaan" onclick="window.location.href=window.location.href" >Semua</label>
-</form>
-<?php
-
-$query= "select * from produk ORDER BY tanggal DESC limit $mulai_dari, $limit "; 
-
-if(isset($_POST['ketersediaan']) && !empty($_POST['ketersediaan'])){
-    if ($_POST['ketersediaan'] == 'ada'){                  //HERE
-        $query = "select * from produk WHERE stock>=1 ORDER BY tanggal DESC";
-    }
-    if ($_POST['ketersediaan'] == 'kosong'){
-        $query = "select * from produk WHERE stock=0 ORDER BY tanggal DESC";
-    }
-}
-$result = mysqli_query($con, $query) or die('Error Refreshing the page: ' . mysqli_error($con));
-
-?>
 
 
-
-
-
-
+$sql_limit = "select * from produk ORDER BY tanggal DESC limit $mulai_dari, $limit";
+$query=mysqli_query($con, $sql_limit); ?>
 <h2>Data Produk</h2>
 
 <input type=button style='background-color:#006699; color:#fff; line-height:30px;cursor:pointer;border:hidden;' value='Tambah Data Produk' onclick=location.href='?modul=produk&aksi=tambahproduk'></br></br>
@@ -68,7 +43,7 @@ $result = mysqli_query($con, $query) or die('Error Refreshing the page: ' . mysq
 <?php
 $no=1;
 $baris=1;
-while($tampil=mysqli_fetch_array($result)){ 
+while($tampil=mysqli_fetch_array($query)){ 
 if($baris%2==0)
 {
 echo "<tr bgcolor=\"#e4e3e8\">"; 
@@ -94,16 +69,13 @@ $baris++;}
 echo"</tr>";
 echo"</table></center>";
 $banyakHalaman = ceil($banyakData / $limit);
-if(!isset($_POST['ketersediaan'])){
 echo '</br><div id="page" style="font-size:14px">Halaman: ';
 for($i = 1; $i <= $banyakHalaman; $i++){
  if($page != $i){
- 	echo '  [<a href="index.php?modul=produk&aksi=tampil&page='.$i.'">'.$i.'</a>]  ';
-}else
-{
+ echo '  [<a href="index.php?modul=produk&aksi=tampil&page='.$i.'">'.$i.'</a>]  ';
+ }else{
  echo "[<span style='color:green'>$i</span>] ";
  }
-}
 }
 break;
 
@@ -202,7 +174,7 @@ while($tampil=mysqli_fetch_array($query)) : ?>
 <tr><td>Kategori</td><td> : <?=$tampil['kategori']?></td></tr>
 <tr><td>Stock</td><td> : <?=$tampil['stock']?></td></tr>
 <tr><td>Harga Beli</td><td> : Rp.<?=number_format($tampil['harga_beli'],2,',','.')?></td></tr>
-<tr><td>Harga Jual</td><td> : Rp.<?=number_format($tampil['harga_jual'],2,',','.')?></td></tr>
+<tr><td>Harga Jual</td><td> : Rp.<?=number_format($tampil['harga_beli'],2,',','.')?></td></tr>
 <tr><td>Tanggal</td><td> : <?=$tampil['tanggal']?></td></tr>
 </table></br></br><a href='index.php?modul=produk&aksi=tampil'><b>Kembali</b></a></center>
 <?php endwhile; ?>

@@ -159,7 +159,7 @@ setTimeout('location.href=\"?modul=penjualan&aksi=baru\"' ,0);
 </script>";
 $maks=mysqli_query($con, "select MAX(CONCAT(LPAD((RIGHT((no_transaksi),9)+1),9,'0'))) as no from penjualan");
 $tampil=mysqli_fetch_array($maks);
-echo"<form action='modul/penjualan/faktur.php' target=\"popUp\" onsubmit=\"popup(this);\" method=POST><span style='font-size:20pt'>Bayar : <select name='jenisbayar' style='font-size:20pt'><option value='Kontan'>Kontan</option><option value='DP'>DP</option></select>Rp</span><input style='font-size:20pt' type='text' name='bayar' onkeyup=\"this.value = numberFormat(this.value);\" maxlength='20'><span style='font-size:20pt'>,00</span></br>
+echo"<form action='modul/penjualan/faktur-A4.php' target=\"popUp\" onsubmit=\"popup(this);\" method=POST><span style='font-size:20pt'>Bayar : <select name='jenisbayar' style='font-size:20pt'><option value='Kontan'>Kontan</option><option value='DP'>DP</option></select>Rp</span><input style='font-size:20pt' type='text' name='bayar' onkeyup=\"this.value = numberFormat(this.value);\" maxlength='20'><span style='font-size:20pt'>,00</span></br>
 <input size='35' type='hidden' name='pelanggan' id='pelanggan' value='$tampilpelanggan6[id_pelanggan]'/>
 <input size='35' type='hidden' name='no_transaksi' id='no_transaksi' value='FKT$tampil[no]'/>
 <input size='35' type='hidden' name='level' id='level' value='$_SESSION[level]'/>

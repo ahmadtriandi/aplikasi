@@ -132,8 +132,8 @@ $bulan = 'Desember';
 break;
 }
 echo"<center>
-<b>CV Nama CV, Alamat CV CV Nama CV, Alamat CV CV Nama CV, Alamat CV </br>
-CV Nama CV, Alamat CV CV Nama CV, Alamat CV CV Nama CV, Alamat CV CV Nama CV, Alamat CV<b>
+<b>BEST CELLULAR</b> </br>
+JL. LORONG 104 Timur<br>
 <table style='width:700px; font-size:10pt; font-family:arial' border = '0'>
 <tr><td align='left' style='padding-left:500px'>Tanggal, $tgl $bulan $thn</td></tr>
 </table>
