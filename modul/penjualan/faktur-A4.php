@@ -156,7 +156,7 @@ while($tampil=mysqli_fetch_array($query)){
 echo "<tr>"; 
 echo"<td>$tampil[kode_barang]</td>";
 echo"<td>$tampil[nama_barang]</td>";
-echo"<td>Rp".number_format($tampil['harga_jual'],2,',','.')."</td>";
+echo"<td>Rp".number_format($tampil['hargajuall'],2,',','.')."</td>";
 echo"<td>$tampil[qty]</td>";
 echo"<td>Rp".number_format($tampil['potongan'],2,',','.')."</td>";
 $tampilrupiah=number_format($tampil['total_harga'],2,',','.');

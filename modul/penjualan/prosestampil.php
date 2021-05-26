@@ -15,15 +15,13 @@ if ($get_pages){
 	while ($row=mysqli_fetch_array($result)){
 		$id_bt=$row['nama_barang'];
 		?>
-			<input type='text' size='23' name='nama_barang' value='<?php echo $id_bt; ?>'/ disabled>
-			<input type='text' size='10' name='harga_jual' value='<?php echo $row['harga_jual']; ?>'/ disabled>
+			<input type='text' size='23' name='nama_barang' value='<?php echo $id_bt; ?>' disabled>
+			<input type='text' size='10' name='harga_jual' value='<?php echo $row['harga_jual']; ?>' disabled>
 		
 		<?php
 	}
 	
 	?>
 		<?php
-}else{
-	?><b><input type='text' size='23' disabled><input type='text' size='10' disabled></b><?php
 }
 ?>

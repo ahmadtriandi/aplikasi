@@ -8,7 +8,7 @@
 ?> -->
 
 <?php
-$con = mysqli_connect("localhost","root","root","dbpos");
+$con = mysqli_connect("localhost","root","root","dbstock");
 
 // $db= @mysqli_select_db($con,"posweb1")or die ("Database Tidak Ditemukan");
 

@@ -21,8 +21,6 @@ $banyakData = $rsCount[0];
 $page = isset($_GET['page']) ? $_GET['page'] : 1;
 $limit = 10;
 $mulai_dari = $limit * ($page - 1);
-
-
 $sql_limit = "select * from produk ORDER BY tanggal DESC limit $mulai_dari, $limit";
 $query=mysqli_query($con, $sql_limit); ?>
 <h2>Data Produk</h2>
@@ -69,6 +67,7 @@ $baris++;}
 echo"</tr>";
 echo"</table></center>";
 $banyakHalaman = ceil($banyakData / $limit);
+
 echo '</br><div id="page" style="font-size:14px">Halaman: ';
 for($i = 1; $i <= $banyakHalaman; $i++){
  if($page != $i){
@@ -77,6 +76,7 @@ for($i = 1; $i <= $banyakHalaman; $i++){
  echo "[<span style='color:green'>$i</span>] ";
  }
 }
+
 break;
 
 //INTERFACE TAMBAH
