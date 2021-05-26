@@ -123,8 +123,7 @@ $cekfkt = "FKT$tampilfaktur[no_faktur]";
 				?>
 				<td><?=$tampil[kode_barang] ?></td>
 				<td><?=$tampil[nama_barang] ?></td>
-				
-				<td>Rp.<?=number_format($tampil['hargajuall'],2,',','.')?>.</td>
+				<td>Rp.<?=number_format($tampil['harga_jual'],2,',','.')?>.</td>
 
 				<td>Rp.<?=number_format($tampil['potongan'],2,',','.')?>.</td>
 				<td><?=$tampil[qty] ?></td>
@@ -146,8 +145,7 @@ $cekfkt = "FKT$tampilfaktur[no_faktur]";
 				<td>";
 				echo '<input type="text" size="13" name="id_barang" id="id_barang" size="25" onload="bukutamu(id_barang.value)" onclick="bukutamu(id_barang.value)" onkeyup="bukutamu(id_barang.value)" />';
 				echo "</td>
-				<td><div id='pencarian'></div></td>
-				<td><input name='hargajuall' onkeyup=\"this.value = numberFormat(this.value);\" size='10' type='text'/>
+				<td colspan=2><div id='pencarian'></div></td>
 				<td><input name='potongan' onkeyup=\"this.value = numberFormat(this.value);\" value='0' size='5' type='text'/>
 				<td><input name='qty' value='1' size='1' type='text'/><input type='submit' value='enter'>
 				<script language=\"Javascript\">
@@ -169,7 +167,7 @@ $cekfkt = "FKT$tampilfaktur[no_faktur]";
 				</script>";
 				$maks=mysqli_query($con, "select MAX(CONCAT(LPAD((RIGHT((no_transaksi),9)+1),9,'0'))) as no from penjualan");
 				$tampil=mysqli_fetch_array($maks);
-				echo"<form action='modul/penjualan/faktur-a4.php' target=\"popUp\" onsubmit=\"popup(this);\" method=POST><span style='font-size:20pt'>Bayar : <select name='jenisbayar' style='font-size:20pt'><option value='Kontan'>Kontan</option><option value='DP'>DP</option></select>Rp</span><input style='font-size:20pt' type='text' name='bayar' onkeyup=\"this.value = numberFormat(this.value);\" maxlength='20'><span style='font-size:20pt'>,00</span></br>
+				echo"<form action='modul/penjualan/faktur.php' target=\"popUp\" onsubmit=\"popup(this);\" method=POST><span style='font-size:20pt'>Bayar : <select name='jenisbayar' style='font-size:20pt'><option value='Kontan'>Kontan</option><option value='DP'>DP</option></select>Rp</span><input style='font-size:20pt' type='text' name='bayar' onkeyup=\"this.value = numberFormat(this.value);\" maxlength='20'><span style='font-size:20pt'>,00</span></br>
 				<input size='35' type='hidden' name='pelanggan' id='pelanggan' value='$tampilpelanggan6[id_pelanggan]'/>
 				<input size='35' type='hidden' name='no_transaksi' id='no_transaksi' value='FKT$tampil[no]'/>
 				<input size='35' type='hidden' name='level' id='level' value='$_SESSION[level]'/>
@@ -244,13 +242,11 @@ $row=mysqli_fetch_array($qri);
 //if ($_POST['id_barang']=="SRV"){
 //$totalharga = $_POST['srv'];
 //}else{
-	$hargajuall = str_replace(",", '', $_POST['hargajuall']);
-	$totalharga = $_POST['qty'] * ($hargajuall-$potongan);
-
+$totalharga = $_POST['qty'] * ($row['harga_jual']-$potongan);
 //}
 $pecahpelanggan = explode("-", $_POST['pelanggan']);
 $pelanggan = $pecahpelanggan[0];
- mysqli_query($con, "INSERT INTO penjualan VALUES(NULL,'$_POST[no_transaksi]','$pelanggan','$_POST[tanggal_transaksi]','$_POST[id_barang]',$hargajuall,$potongan,$_POST[qty],$totalharga)");
+ mysqli_query($con, "INSERT INTO penjualan VALUES(NULL,'$_POST[no_transaksi]','$pelanggan','$_POST[tanggal_transaksi]','$_POST[id_barang]',$potongan,$_POST[qty],$totalharga)");
 $cekstok = mysqli_query($con, "select stock from produk where id_barang = '$_POST[id_barang]'");
 $tampilstok = mysqli_fetch_array($cekstok);
 if ($_POST['id_barang'] == 'SRV'){
@@ -265,6 +261,20 @@ echo '<script>setTimeout(\'location.href="?modul=penjualan&aksi=tampil"\' ,0);</
 
 break;
 
+//UPDATE USER
+case "update":
+mysqli_query($con, "UPDATE produk SET id_barang='$_POST[id_barang]',
+                                brand ='$_POST[brand]',
+                                nama_barang='$_POST[nama_barang]',
+                               satuan=$_POST[satuan],
+			kategori ='$_POST[kategori]',
+			stock =$_POST[stock],
+			harga_beli =$_POST[harga_beli],
+			harga_jual =$_POST[harga_jual]
+where id_barang='$_GET[id_barang]'");
+echo '<script>alert(\'Data Berhasil Diedit\')
+	setTimeout(\'location.href="?modul=produk&aksi=tampil"\' ,0);</script>';
+break;
 
 case "baru";
 //----
@@ -336,10 +346,9 @@ echo "
 <td>";
 echo '<input type="text" size="13" name="id_barang" id="id_barang" size="25" onload="bukutamu(id_barang.value)" onclick="bukutamu(id_barang.value)" onkeyup="bukutamu(id_barang.value)" />';
 echo "</td>
-<td><div id='pencarian'></div></td>
-<td><input name='hargajuall' onkeyup=\"this.value = numberFormat(this.value);\" size='10' type='text'/>
-
-<td><input name='potongan' onkeyup=\"this.value = numberFormat(this.value);\" size='5' type='text'/>
+<td ></td>
+<td><input name='hargaJual' value='0' size='5' type='text'/>
+<td><input name='potongan' value='0' size='5' type='text'/>
 <td><input name='qty' size='1' value='1' type='text'/><input type='submit' value='enter'>
 <script language=\"Javascript\">
 document.postform.id_barang.focus()
@@ -360,7 +369,7 @@ setTimeout('location.href=\"?modul=penjualan&aksi=baru\"' ,0);
 </script>";
 $maks=mysqli_query($con, "select MAX(CONCAT(LPAD((RIGHT((no_transaksi),9)+1),9,'0'))) as no from penjualan");
 $tampil=mysqli_fetch_array($maks);
-echo"<form action='modul/penjualan/faktur-a4.php' target=\"popUp\" onsubmit=\"popup(this);\" method=POST><span style='font-size:20pt'></br>Bayar : <select name='jenisbayar' style='font-size:20pt'><option value='Kontan'>Kontan</option><option value='DP'>DP</option></select>Rp</span><input style='font-size:20pt' type='text' name='bayar' onkeyup=\"this.value = numberFormat(this.value);\" maxlength='20'><span style='font-size:20pt'>,00</span></br>
+echo"<form action='modul/penjualan/faktur.php' target=\"popUp\" onsubmit=\"popup(this);\" method=POST><span style='font-size:20pt'></br>Bayar : <select name='jenisbayar' style='font-size:20pt'><option value='Kontan'>Kontan</option><option value='DP'>DP</option></select>Rp</span><input style='font-size:20pt' type='text' name='bayar' onkeyup=\"this.value = numberFormat(this.value);\" maxlength='20'><span style='font-size:20pt'>,00</span></br>
 <input size='35' type='hidden' name='pelanggan' id='pelanggan' value='$tampilpelanggan6[id_pelanggan]'/>
 <input size='35' type='hidden' name='no_transaksi' id='no_transaksi' value='FKT$tampil[no]'/>
 <input size='35' type='hidden' name='level' id='level' value='$_SESSION[level]'/>
@@ -424,7 +433,7 @@ echo '<script>
    function printPage()
    {
       var div = document.getElementById("printerDiv");
-      div.innerHTML = \'<iframe src="modul/penjualan/faktur-a4.php?no_transaksi='.$tampil['no_transaksi'].'&uang_dibayar='.$bayar.'&uang_kembalian=0&sisa='.$sisa.'&dp='.$bayar.'" onload="this.contentWindow.print();"></iframe>\';
+      div.innerHTML = \'<iframe src="modul/penjualan/faktur.php?no_transaksi='.$tampil['no_transaksi'].'&uang_dibayar='.$bayar.'&uang_kembalian=0&sisa='.$sisa.'&dp='.$bayar.'" onload="this.contentWindow.print();"></iframe>\';
 	  
    }
 </script>';
@@ -447,7 +456,7 @@ echo '<script>
    function printPage()
    {
       var div = document.getElementById("printerDiv");
-      div.innerHTML = \'<iframe src="modul/penjualan/faktur-a4.php?no_transaksi='.$tampil['no_transaksi'].'&uang_dibayar='.$bayar.'&uang_kembalian='.$kembalian.'&sisa=0&dp=0" onload="this.contentWindow.print();"></iframe>\';
+      div.innerHTML = \'<iframe src="modul/penjualan/faktur.php?no_transaksi='.$tampil['no_transaksi'].'&uang_dibayar='.$bayar.'&uang_kembalian='.$kembalian.'&sisa=0&dp=0" onload="this.contentWindow.print();"></iframe>\';
    }
 </script>';
 echo '<script>alert(\'Sistem Akan Mencetak Faktur Pembayaran. Klik OK / Enter \')

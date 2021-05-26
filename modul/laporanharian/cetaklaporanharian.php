@@ -40,7 +40,9 @@ echo"<center>
 </table>
 <table id='tabel' style='width:700px; font-size:10pt;' border='1'>
 <tr align='center'>
+
 <td width='12%'>Kode Barang</td>
+<td width='12%'>Tanggal</td>
 <td width='15%'>Nama Barang</td>
 <td width='10%'>Harga Beli</td>
 <td width='10%'>Potongan</td>
@@ -57,25 +59,27 @@ $totalmodal=0;
 while($tampil=mysqli_fetch_array($query)){ 
 echo "<tr>"; 
 echo"<td>$tampil[kode_barang]</td>";
-$tampilkan = mysqli_fetch_array(mysqli_query($con, "select harga_beli,harga_jual from produk where id_barang='$tampil[kode_barang]'"));
-$tampilkan2 = mysqli_fetch_array(mysqli_query($con, "select total_harga,potongan,qty from penjualan where no_transaksi='$tampil[no_transaksi]'"));
+$tampilkan = mysqli_fetch_array(mysqli_query($con, "select harga_beli from produk where id_barang='$tampil[kode_barang]'"));
+$tampilkan2 = mysqli_fetch_array(mysqli_query($con, "select total_harga,potongan,qty,hargajuall,tanggal_transaksi from penjualan where no_transaksi='$tampil[no_transaksi]'"));
 if ($tampil['kode_barang']=="SRV"){
 $untung = $tampilkan2[total_harga];
 }else{
-$untung = (($tampilkan['harga_jual']*$tampilkan2['qty']) - ($tampilkan['harga_beli']*$tampilkan2['qty']))-($tampilkan2['potongan']*$tampilkan2['qty']);
+$untung = (($tampilkan2['hargajuall']*$tampilkan2['qty']) - ($tampilkan['harga_beli']*$tampilkan2['qty']))-($tampilkan2['potongan']*$tampilkan2['qty']);
 }
+
+echo"<td>$tampilkan2[tanggal_transaksi]</td>";
 echo"<td>$tampil[nama_barang]</td>";
 echo"<td align='right'>".number_format($tampilkan['harga_beli'],0,',','.')."</td>";
 echo"<td align='right'>$tampilkan2[potongan] /brg</td>";
 echo"<td>$tampilkan2[qty]</td>";
 $totomol = $tampilkan['harga_beli']*$tampilkan2['qty'];
 echo"<td align='right'>".number_format($totomol,0,',','.')." </td>";
-echo"<td align='right'>".number_format($tampilkan['harga_jual'],0,',','.')." </td>";
+echo"<td align='right'>".number_format($tampilkan2['hargajuall'],0,',','.')." </td>";
 echo"<td align='right'>".number_format($tampilkan2['total_harga'],0,',','.')." </td>";
 echo"<td align='right'>".number_format($untung,0,',','.')." </td>";
 error_reporting(0);
 $totaluntung+=$untung;
-$totalharga+=$tampilkan2['total_harga'];
+$totalharga+=$tampilkan2['hargajuall'];
 $totalmodal+=$totomol;
 }
 echo"</tr>";
