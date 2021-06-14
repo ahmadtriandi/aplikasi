@@ -1,106 +1,262 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="Dashboard">
-    <meta name="keyword" content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
+<?php
+session_start();
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta name="viewport" content="width=device-width" charset="utf-8" />
+<link href="style/style.css" rel="stylesheet" type="text/css"/>
+<title>BEST CELL</title>
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="stylesheet" type="text/css" href="javascript/autocomplete/jquery.autocomplete.css" />
+<script type="text/javascript" src="javascript/autocomplete/jquery.js"></script>
+<script type="text/javascript" src="javascript/autocomplete/jquery.autocomplete.js"></script>
+<script language="javascript" src="modul/pencarian/caritransaksi.js"></script>
+<script language="javascript" src="modul/pencarian/caripelanggan.js"></script>
+<script language="javascript" src="modul/pencarian/cariproduk.js"></script>
+<script language="javascript" src="modul/pencarian/cariretur.js"></script>
+<script language="javascript" src="modul/pencarian/cariretursup.js"></script>
+<script language="javascript" src="modul/penjualan/ajax.js"></script>
+<script language="javascript" src="modul/pembelian/ajax.js"></script>
+<script type="text/javascript">
+  function numberFormat(nr) {
+  //remove the existing
+  var regex = /,/g;
+  nr        = nr.replace(regex,'');
 
-    <title>DASHGUM - Bootstrap Admin Template</title>
+  //split it into 2 parts
+  var x   = nr.split(',');
+  var p1  = x[0];
+  var p2  = x.length > 1 ? ',' + x[1] : '';
+  
+  //match group of 3 numbers (0-9) and add ',' between them
+  regex   = /(\d+)(\d{3})/;
+  while(regex.test(p1)) {
+    p1 = p1.replace(regex, '$1' + ',' + '$2');
+  }
 
-    <!-- Bootstrap core CSS -->
-    <link href="file:///C|/xampp/htdocs/ePOS1/Theme/assets/css/bootstrap.css" rel="stylesheet">
-    <!--external css-->
-    <link href="file:///C|/xampp/htdocs/ePOS1/Theme/assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
-        
-    <!-- Custom styles for this template -->
-    <link href="file:///C|/xampp/htdocs/ePOS1/Theme/assets/css/style.css" rel="stylesheet">
-    <link href="file:///C|/xampp/htdocs/ePOS1/Theme/assets/css/style-responsive.css" rel="stylesheet">
+  //join the 2 parts and return the formatted number
+  return p1 + p2;
+        }
+</script>
 
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-  </head>
+<script type="text/javascript">
+  function showUser(str)
+  {
+  if (str=="")
+    {
+    document.getElementById("tampilkan").innerHTML="";
+    return;
+    } 
+  if (window.XMLHttpRequest)
+    {
+    xmlhttp=new XMLHttpRequest();
+    }
+  else
+    {
+    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+    }
+  xmlhttp.onreadystatechange=function()
+    {
+    if (xmlhttp.readyState==4 && xmlhttp.status==200)
+      {
+      document.getElementById("tampilkan").innerHTML=xmlhttp.responseText;
+      }
+    }
+  xmlhttp.open("GET","modul/penjualan/proses.php?q="+str,true);
+  xmlhttp.send();
+  }
+</script>
 
-  <body>
+<script>
+ $(document).ready(function(){
+  $("#pelanggan").autocomplete("modul/penjualan/tampilpelanggan.php", {
+        selectFirst: true
+  });
+ });
+</script>
+<script>
+ $(document).ready(function(){
+  $("#supplier").autocomplete("modul/pembelian/tampilsupplier.php", {
+        selectFirst: true
+  });
+ });
+</script>
+<script>
+ $(document).ready(function(){
+  $("#id_barang").autocomplete("modul/penjualan/tampiltransaksi.php", {
+        selectFirst: true
+  });
+ });
+</script>
+<script>
+ $(document).ready(function(){
+  $("#kode_barang").autocomplete("modul/penjualan/autocomplete.php", {
+        selectFirst: true
+  });
+ });
+</script>
+<script>
+ $(document).ready(function(){
+  $("#kode_buku").autocomplete("modul/produk/autocomplete2.php", {
+        selectFirst: true
+  });
+ });
+</script>
+</head>
+<body>
+<center>
+<table id="template" align="center"><tr>
+<td id="header" style="background:url(images/header.jpg);"></td>
+</tr>
 
-      <!-- **********************************************************************************************************************************************************
-      MAIN CONTENT
-      *********************************************************************************************************************************************************** -->
+<tr><td>
 
-	  <div id="login-page">
-	  	<div class="container">
-	  	
-		      <form class="form-login" action="file:///C|/xampp/htdocs/ePOS1/Theme/index.html">
-		        <h2 class="form-login-heading">sign in now</h2>
-		        <div class="login-wrap">
-		            <input type="text" class="form-control" placeholder="User ID" autofocus>
-		            <br>
-		            <input type="password" class="form-control" placeholder="Password">
-		            <label class="checkbox">
-		                <span class="pull-right">
-		                    <a data-toggle="modal" href="file:///C|/xampp/htdocs/ePOS1/Theme/login.html#myModal"> Forgot Password?</a>
-		
-		                </span>
-		            </label>
-		            <button class="btn btn-theme btn-block" href="index.html" type="submit"><i class="fa fa-lock"></i> SIGN IN</button>
-		            <hr>
-		            
-		            <div class="login-social-link centered">
-		            <p>or you can sign in via your social network</p>
-		                <button class="btn btn-facebook" type="submit"><i class="fa fa-facebook"></i> Facebook</button>
-		                <button class="btn btn-twitter" type="submit"><i class="fa fa-twitter"></i> Twitter</button>
-		            </div>
-		            <div class="registration">
-		                Don't have an account yet?<br/>
-		                <a class="" href="#">
-		                    Create an account
-		                </a>
-		            </div>
-		
-		        </div>
-		
-		          <!-- Modal -->
-		          <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal" class="modal fade">
-		              <div class="modal-dialog">
-		                  <div class="modal-content">
-		                      <div class="modal-header">
-		                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-		                          <h4 class="modal-title">Forgot Password ?</h4>
-		                      </div>
-		                      <div class="modal-body">
-		                          <p>Enter your e-mail address below to reset your password.</p>
-		                          <input type="text" name="email" placeholder="Email" autocomplete="off" class="form-control placeholder-no-fix">
-		
-		                      </div>
-		                      <div class="modal-footer">
-		                          <button data-dismiss="modal" class="btn btn-default" type="button">Cancel</button>
-		                          <button class="btn btn-theme" type="button">Submit</button>
-		                      </div>
-		                  </div>
-		              </div>
-		          </div>
-		          <!-- modal -->
-		
-		      </form>	  	
-	  	
-	  	</div>
-	  </div>
-
-    <!-- js placed at the end of the document so the pages load faster -->
-    <script src="file:///C|/xampp/htdocs/ePOS1/Theme/assets/js/jquery.js"></script>
-    <script src="file:///C|/xampp/htdocs/ePOS1/Theme/assets/js/bootstrap.min.js"></script>
-
-    <!--BACKSTRETCH-->
-    <!-- You can use an image of whatever size. This script will stretch to fit in any screen size.-->
-    <script type="text/javascript" src="file:///C|/xampp/htdocs/ePOS1/Theme/assets/js/jquery.backstretch.min.js"></script>
-    <script>
-        $.backstretch("assets/img/login-bg.jpg", {speed: 500});
-    </script>
+<br> 
+<hr style="height:2px;border-width:0;color:gray;background-color:gray"> 
+<br>
+<?php
+include "menu/menu.php";
+?>
+</td>
+</table>
+<table id="konten" align="center"><tr><td>
 
 
-  </body>
+<?php
+date_default_timezone_set('Asia/Jakarta');
+$tanggal= mktime(date("m"),date("d"),date("Y"));
+$tglsekarang = date("Y-m-d", $tanggal);
+$pecah1 = explode("-", $tglsekarang);
+$date1 = $pecah1[2];
+$month1 = $pecah1[1];
+$year1 = $pecah1[0];
+$sekarang = GregorianToJD($month1, $date1, $year1);
+$valid = "2500-03-07";
+$pecah2 = explode("-", $valid);
+$date2 = $pecah2[2];
+$month2 = $pecah2[1];
+$year2 = $pecah2[0];
+$valid2 = GregorianToJD($month2, $date2, $year2);
+$selisih = $valid2 - $sekarang;
+
+
+if($selisih < 0){
+  echo "POS System di NON AKTIFKAN, Silahkan hubungi system administrator anda";}
+  else{
+    include "koneksi/koneksi.php";
+    if (isset($_GET["modul"])) {
+      switch($_GET["modul"]){
+        case "login";
+        include "modul/login/input.php";
+        break;
+        case "anggota";
+        include "modul/anggota/anggota.php";
+        break;
+        case "laporan";
+        include "modul/laporan/laporan.php";
+        break;
+        case "laporanpembelian";
+        include "modul/laporanpembelian/laporanpembelian.php";
+        break;
+        case "laporanharian";
+        include "modul/laporanharian/laporanharian.php";
+        break;
+        case "laporankeluar";
+        include "modul/laporankeluar/laporankeluar.php";
+        break;
+        case "pembelian";
+        include "modul/pembelian/pembelian.php";
+        break;
+        case "penjualan";
+        include "modul/penjualan/penjualan.php";
+        break;
+        case "retur";
+        include "modul/retur/retur.php";
+        break;
+        case "retursup";
+        include "modul/retursup/retursup.php";
+        break;
+        case "produk";
+        include "modul/produk/produk.php";
+        break;
+        case "user";
+        include "modul/user/user.php";
+        break;
+        case "pelanggan";
+        include "modul/pelanggan/pelanggan.php";
+        break;
+        case "supplier";
+        include "modul/supplier/supplier.php";
+        break;
+        case "piutang";
+        include "modul/piutang/piutang.php";
+        break;
+        case "piutangsup";
+        include "modul/piutangsup/piutangsup.php";
+        break;
+        case "buktipiutang";
+        include "modul/buktipiutang/buktipiutang.php";
+        break;
+        case "buktipiutangsup";
+        include "modul/buktipiutangsup/buktipiutangsup.php";
+        break;
+        case "cfmasuk";
+        include "modul/cfmasuk/cfmasuk.php";
+        break;
+        case "cfkeluar";
+        include "modul/cfkeluar/cfkeluar.php";
+        break;
+        case "pencarian";
+        include "modul/pencarian/cari.php";
+        break;
+        case "backup";
+        include "modul/backup/backup.php";
+        break;
+        case "restore";
+        include "modul/backup/recovery_data.php";
+        break;
+        case "login";
+        include "login/aksilogin.php";
+        break;
+      }
+    }
+    else{ ?>
+      <?php if(!isset($_SESSION["user"])) : ?>
+        <center><div id="background" style="background-color:#0081D7; width:350px; padding-top:15px; padding-bottom:15px;" >
+              <h4><div style="font-family:arial">FORM LOGIN</div></h4>
+              <img src="images/login.png" alt="" width="120"/>	
+    		      <form action="login/aksilogin.php" method="post">
+    			     <table id="login" border="0">
+    			       <tr><td><label for="username">Username </td><td>: <input type="text" name="user" id="username"   /></td></tr>
+    			       <tr><td><label for="password">Password </td><td>: <input type="password" name="password" id="password"/></td></tr>
+    			       <tr><td colspan="2"><br><center><input type="reset" value="RESET" style="background-color:#FF3300; color:#fff; line-height:30px;cursor:pointer;border:hidden;"> <input type="submit" value="LOGIN" style="background-color:#789F00; color:#fff; line-height:30px;cursor:pointer;border:hidden;" ></center></td></tr>
+    			      </table>  
+    		      </form></div>
+              </center>
+
+              <script>
+var form = document.querySelector('form');
+form.addEventListener('reset', function(event) {
+    var autofocusField = form.querySelector('[autofocus]');
+    if(autofocusField instanceof HTMLInputElement) {
+        autofocusField.focus();
+    }
+});
+</script>
+      
+      <?php else : ?>
+        </br></br>Selamat Datang di Aplikasi <b>POS-WEB </b>(Aplikasi Penjualan & Pembelian Barang berbasis Web)</br>
+       Untuk memulai proses atau transaksi, Silahkan klik icon atau tombol menu yang tersedia di bagian atas.</br></br></br>
+        Anda Login sebagai User: <b><?=$_SESSION['user']?></b> | Level: <b><?= $_SESSION["level"] ?></b> <br> <br> <a href="login/aksilogout.php">Logout</a></br>
+      <?php endif; ?>
+      <?php
+    }
+  } ?>
+  </div></td></tr></table>
+<div id="footer">Copyright <?=date('Y')?> Best Celular</div>
+
+</center>
+</body>
 </html>
