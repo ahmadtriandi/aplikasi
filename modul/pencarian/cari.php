@@ -82,8 +82,8 @@ echo '<h3>Pencarian Data Pelanggan</h3><form>
 break;
 case "produk";
 echo '<h3>Pencarian Data Produk</h3><form>
-		<font face="verdana" size="2">Ketikkan Data Produk Yang Ingin Di Cari : </font><input type="text" name="id_produk" id="id_produk" size="25" onkeyup="tampilbarang(id_produk.value)" />
-	
+		<font face="verdana" size="2">Ketikkan Data Produk Yang Ingin Di Cari : </font><input type="text" name="id_produk" id="id_produk" size="25" onkeyup="tampilbarang(id_produk.value)" autofocus="autofocus"/>
+		<input type="reset" value="RESET" style="background-color:#FF3300; color:#fff; line-height:30px;cursor:pointer;border:hidden;" >
 	<br />
 	<div id="pencarianbarang"></div>';
 break;
@@ -94,3 +94,13 @@ echo '<iframe width=174 height=189 name="gToday:normal:calender/agenda.js" id="g
 </iframe>';
 
 ?>
+
+<script>
+var form = document.querySelector('form');
+form.addEventListener('reset', function(event) {
+    var autofocusField = form.querySelector('[autofocus]');
+    if(autofocusField instanceof HTMLInputElement) {
+        autofocusField.focus();
+    }
+});
+</script>
